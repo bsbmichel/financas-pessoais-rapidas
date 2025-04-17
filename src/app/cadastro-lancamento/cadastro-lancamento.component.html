@@ -1,1 +1,29 @@
-<p>cadastro-lancamento works!</p>
+<h1>Finanças Pessoais Rápidas</h1>
+
+<form (ngSubmit)="salvar()" #formLancamento="ngForm">
+  <label for="descricao">Descrição</label>
+  <input type="text" id="descricao" [(ngModel)]="descricao" name="descricao" required />
+
+  <label for="valor">Valor</label>
+  <input type="number" id="valor" [(ngModel)]="valor" name="valor" required />
+
+  <label for="tipo">Tipo</label>
+  <select id="tipo" [(ngModel)]="tipo" name="tipo" required>
+    <option value="entrada">Entrada</option>
+    <option value="saida">Saída</option>
+  </select>
+
+  <label for="data">Data</label>
+  <input type="date" id="data" [(ngModel)]="data" name="data" required />
+
+  <button type="submit" [disabled]="formLancamento.invalid">Salvar</button>
+</form>
+
+<hr />
+
+<h2>Lista de Lançamentos</h2>
+<ul>
+  <li *ngFor="let lanc of lancamentos">
+    {{ lanc.data }} - {{ lanc.descricao }} - R$ {{ lanc.valor }} ({{ lanc.tipo }})
+  </li>
+</ul>

@@ -1,9 +1,12 @@
 // Importa o decorator @Component do Angular para transformar a classe em componente
 import { Component } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 // Define as configurações do componente Angular
 @Component({
   selector: 'app-cadastro-lancamento', // Nome da tag HTML usada para esse componente
+  standalone: true,
+  imports: [CommonModule, FormsModule], // Importa módulos comuns e de formulários
   templateUrl: './cadastro-lancamento.component.html', // Caminho do arquivo HTML (estrutura visual)
   styleUrls: ['./cadastro-lancamento.component.css'] // Caminho do CSS (estilo visual)
 })
