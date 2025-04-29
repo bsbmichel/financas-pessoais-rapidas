@@ -4,7 +4,7 @@ import { CadastroLancamentoComponent } from './cadastro-lancamento/cadastro-lanc
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CadastroLancamentoComponent],
+  imports: [CadastroLancamentoComponent],
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
