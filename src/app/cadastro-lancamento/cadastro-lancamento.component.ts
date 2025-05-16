@@ -3,14 +3,31 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+// Importa módulos do Angular Material para input, form, botão, select e card
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+
 // Importação do serviço que salva/carrega dados do localStorage
 import { LancamentoService } from '../lancamento.service';
+import { GraficoResumoComponent } from '../grafico-resumo/grafico-resumo.component';
 
 @Component({
   selector: 'app-cadastro-lancamento', // Nome da tag usada no HTML para este componente
   standalone: true,
-  // Módulos necessários para funcionar diretivas como *ngFor e ngModel
-  imports: [CommonModule, FormsModule],
+  // Importa os módulos necessários para o funcionamento do componente
+  imports: [  
+    CommonModule, // Funcionalidades básicas do Angular
+    FormsModule,  // Habilita o ngModel (two-way binding)
+    MatInputModule, // Input estilizado do Material
+    MatFormFieldModule, // Formulário estilizado
+    MatButtonModule, // Botões estilizados
+    MatSelectModule, // Dropdown estilizado
+    MatCardModule, // Card (caixa de conteúdo)
+    GraficoResumoComponent // Mantém o gráfico funcionando
+  ],
   templateUrl: './cadastro-lancamento.component.html',
   styleUrls: ['./cadastro-lancamento.component.css']
 })
@@ -42,13 +59,22 @@ export class CadastroLancamentoComponent implements OnInit {
   }
 
   // Função chamada ao clicar no botão "Salvar"
-  salvar() {
+  salvar(form: any) {
     const novoLancamento = {
       descricao: this.descricao,
-      valor: this.valor,
+      valor: this.valor?.toString()
+                      .replace('R$', '')
+                      .replace(/\./g, '')
+                      .replace(',', '.'),
       tipo: this.tipo,
       data: this.data
     };
+
+    // Valida se os campos foram realmente preenchidos
+    if (!novoLancamento.descricao || !novoLancamento.valor || !novoLancamento.data) {
+      console.warn('Preencha todos os campos obrigatórios.');
+      return;
+    }
 
     // Adiciona o novo lançamento à lista
     this.lancamentos.push(novoLancamento);
@@ -64,6 +90,9 @@ export class CadastroLancamentoComponent implements OnInit {
     this.valor = null;
     this.tipo = 'entrada';
     this.data = '';
+
+    // Reseta o formulário visualmente
+    form.resetForm({ tipo: 'entrada' });
   }
 
   // Função para limpar todos os lançamentos e o localStorage
@@ -95,4 +124,16 @@ export class CadastroLancamentoComponent implements OnInit {
     // Calcula o saldo final
     this.saldoFinal = this.totalEntradas - this.totalSaidas;
   }
+  
+  // Retorna os lançamentos filtrados conforme o tipo selecionado
+  getLancamentosFiltrados() {
+  // Se o filtro estiver como "todos", retorna todos os lançamentos
+    if (this.filtro === 'todos') {
+      return this.lancamentos;
+    }
+  // Caso contrário, retorna apenas os que forem do tipo selecionado
+  return this.lancamentos.filter(l => l.tipo === this.filtro);
+}
+  // Controla o tipo de filtro ativo na tela (todos, entrada ou saída)
+  filtro: 'todos' | 'entrada' | 'saida' = 'todos';
 }

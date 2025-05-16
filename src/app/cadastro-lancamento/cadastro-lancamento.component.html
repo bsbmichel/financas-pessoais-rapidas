@@ -1,74 +1,83 @@
-<!-- Título principal do sistema -->
-<h1>Finanças Pessoais Rápidas</h1>
+<!-- Card do Angular Material para agrupar o formulário -->
+<mat-card>
+  <!-- Título do Card -->
+  <mat-card-title>Cadastro de Lançamento</mat-card-title>
 
-<!-- ==================== RESUMO FINANCEIRO ==================== -->
-<!-- Mostra o total de entradas, saídas e o saldo final -->
-<h2>Resumo Financeiro</h2>
-<ul>
-  <li>Entradas: {{ totalEntradas | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</li>
-  <li>Saídas: {{ totalSaidas | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</li>
-  <li><strong>Saldo Final:</strong> {{ saldoFinal | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</li>
-</ul>
+  <!-- Conteúdo do Card -->
+  <mat-card-content>
+    <!-- Formulário para cadastro dos lançamentos -->
+    <form (ngSubmit)="salvar(formLancamento)" #formLancamento="ngForm">
 
-<hr />
+      <!-- Campo de descrição -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descrição</mat-label>
+        <input matInput type="text" [(ngModel)]="descricao" name="descricao" required />
+      </mat-form-field>
 
-<!-- ==================== FORMULÁRIO DE CADASTRO ==================== -->
-<!-- Formulário que captura os dados do lançamento -->
-<form (ngSubmit)="salvar()" #formLancamento="ngForm">
+      <!-- Campo de valor com máscara -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Valor</mat-label>
+        <input matInput type="text"
+               [(ngModel)]="valor"
+               name="valor"
+               required
+               mask="separator.2"
+               thousandSeparator="."
+               decimalMarker=","
+               prefix="R$ " />
+      </mat-form-field>
 
-  <!-- Campo de texto para a descrição do lançamento -->
-  <label for="descricao">Descrição</label>
-  <input
-    type="text"
-    id="descricao"
-    [(ngModel)]="descricao"
-    name="descricao"
-    required
-  />
+      <!-- Campo de tipo (entrada ou saída) -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tipo</mat-label>
+        <mat-select [(ngModel)]="tipo" name="tipo" required>
+          <mat-option value="entrada">Entrada</mat-option>
+          <mat-option value="saida">Saída</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <!-- Campo numérico para o valor, permite centavos com step="0.01" -->
-  <label for="valor">Valor</label>
-  <input
-    type="number"
-    step="0.01"
-    id="valor"
-    [(ngModel)]="valor"
-    name="valor"
-    required
-  />
+      <!-- Campo de data -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Data</mat-label>
+        <input matInput type="date" [(ngModel)]="data" name="data" required />
+      </mat-form-field>
 
-  <!-- Menu de seleção para o tipo de lançamento -->
-  <label for="tipo">Tipo</label>
-  <select id="tipo" [(ngModel)]="tipo" name="tipo" required>
-    <option value="entrada">Entrada</option>
-    <option value="saida">Saída</option>
-  </select>
+      <!-- Botão de salvar -->
+      <button mat-raised-button color="primary" type="submit" [disabled]="formLancamento.invalid">
+        Salvar
+      </button>
 
-  <!-- Campo para selecionar a data do lançamento -->
-  <label for="data">Data</label>
-  <input
-    type="date"
-    id="data"
-    [(ngModel)]="data"
-    name="data"
-    required
-  />
+      <!-- Botão de limpar -->
+      <button mat-raised-button color="warn" type="button" (click)="limparTudo()">
+        Limpar Tudo
+      </button>
 
-  <!-- Botão de envio (submit) que chama o método salvar() -->
-  <button type="submit" [disabled]="formLancamento.invalid">Salvar</button>
+    </form>
+  </mat-card-content>
+</mat-card>
 
-  <!-- Botão secundário que chama o método limparTudo() -->
-  <button type="button" (click)="limparTudo()">Limpar Todos</button>
-</form>
+<!-- Lista dos lançamentos cadastrados -->
+<mat-card>
+  <mat-card-title>Lista de Lançamentos</mat-card-title>
+  <mat-card-content>
+    <ul>
+      <!-- Percorre os lançamentos e exibe cada item -->
+      <li *ngFor="let lanc of getLancamentosFiltrados()">
+        {{ lanc.data }} - {{ lanc.descricao }} - R$ {{ lanc.valor }} ({{ lanc.tipo }})
+      </li>
+    </ul>
+  </mat-card-content>
+</mat-card>
 
-<hr />
+<!-- Resumo financeiro -->
+<mat-card>
+  <mat-card-title>Resumo Financeiro</mat-card-title>
+  <mat-card-content>
+    <p>Entradas: R$ {{ totalEntradas | number:'1.2-2' }}</p>
+    <p>Saídas: R$ {{ totalSaidas | number:'1.2-2' }}</p>
+    <p>Saldo Final: R$ {{ saldoFinal | number:'1.2-2' }}</p>
+  </mat-card-content>
+</mat-card>
 
-<!-- ==================== LISTA DE LANÇAMENTOS ==================== -->
-<h2>Lista de Lançamentos</h2>
-<ul>
-  <!-- Lista dinâmica usando *ngFor para mostrar cada lançamento -->
-  <li *ngFor="let lanc of lancamentos">
-    {{ lanc.data }} - {{ lanc.descricao }} - 
-    {{ lanc.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }} ({{ lanc.tipo }})
-  </li>
-</ul>
+<!-- Gráfico de pizza com entradas e saídas -->
+<app-grafico-resumo [entradas]="totalEntradas" [saidas]="totalSaidas"></app-grafico-resumo>

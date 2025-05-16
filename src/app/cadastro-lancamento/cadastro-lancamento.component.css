@@ -1,0 +1,13 @@
+/* Faz os campos ocuparem toda a largura */
+.full-width {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  /* Centraliza os cards e adiciona espaçamento */
+  mat-card {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  
