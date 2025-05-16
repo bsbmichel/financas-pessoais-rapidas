@@ -13,6 +13,7 @@ import { provideZoneChangeDetection } from '@angular/core';
 // Importa o componente standalone principal do app (ex: Cadastro de Lançamento)
 import { CadastroLancamentoComponent } from './cadastro-lancamento/cadastro-lancamento.component';
 
+// Importa o módulo de máscara para formatação de campos de entrada (ex: moeda, data, CPF, CNPJ)
 import { provideNgxMask } from 'ngx-mask';
 
 // Exporta a configuração principal da aplicação Angular
