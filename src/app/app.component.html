@@ -1,1 +1,9 @@
-<app-cadastro-lancamento></app-cadastro-lancamento>
+<!-- Componente de Cadastro (sempre deve vir primeiro!) -->
+<app-cadastro-lancamento #cadastroRef></app-cadastro-lancamento>
+
+<!-- Verifica se cadastroRef existe antes de acessar suas propriedades -->
+<app-grafico-pizza
+  *ngIf="cadastroRef"
+  [entradas]="cadastroRef.totalEntradas"
+  [saidas]="cadastroRef.totalSaidas">
+</app-grafico-pizza>

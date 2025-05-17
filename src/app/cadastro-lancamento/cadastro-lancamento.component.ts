@@ -12,22 +12,24 @@ import { MatCardModule } from '@angular/material/card';
 
 // Importação do serviço que salva/carrega dados do localStorage
 import { LancamentoService } from '../lancamento.service';
-import { GraficoResumoComponent } from '../grafico-resumo/grafico-resumo.component';
+import { GraficoPizzaComponent } from "../grafico-pizza.component";
 
 @Component({
   selector: 'app-cadastro-lancamento', // Nome da tag usada no HTML para este componente
   standalone: true,
   // Importa os módulos necessários para o funcionamento do componente
-  imports: [  
+  imports: [
     CommonModule, // Funcionalidades básicas do Angular
-    FormsModule,  // Habilita o ngModel (two-way binding)
+    FormsModule, // Habilita o ngModel (two-way binding)
     MatInputModule, // Input estilizado do Material
     MatFormFieldModule, // Formulário estilizado
     MatButtonModule, // Botões estilizados
     MatSelectModule, // Dropdown estilizado
     MatCardModule, // Card (caixa de conteúdo)
-    GraficoResumoComponent // Mantém o gráfico funcionando
-  ],
+    GraficoPizzaComponent // Mantém o gráfico funcionando
+    ,
+    
+],
   templateUrl: './cadastro-lancamento.component.html',
   styleUrls: ['./cadastro-lancamento.component.css']
 })
